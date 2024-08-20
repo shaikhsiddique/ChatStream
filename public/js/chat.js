@@ -3,6 +3,8 @@ const socket = io();
 const messagebox = document.getElementById("messagebox");
 const chatform = document.getElementById("chatform");
 const messageContainer = document.getElementById("message-container");
+const username = document.getElementById('username').innerHTML;
+let partner;
 let room;
 
 // WebRTC Variables
@@ -20,6 +22,8 @@ const rtcSettings = {
 // Event Listeners
 chatform.addEventListener("submit", (event) => {
   event.preventDefault();
+  if(!document.querySelector(".nobody").classList.contains("hidden"))
+  document.querySelector(".nobody").classList.add("hidden");
   socket.emit("send-message", { room, message: messagebox.value });
   attachMessage(messagebox.value);
   messagebox.value = "";
@@ -44,14 +48,23 @@ document.querySelector("#reject-call").addEventListener("click", () => {
 document.querySelector("#hangup").addEventListener("click", handleHangup);
 
 // Socket.io Events
-socket.emit("join-room");
+socket.emit("join-room",username);
 
-socket.on("joined", (roomName) => {
-  room = roomName;
-  document.querySelector(".nobody").classList.add("hidden");
+socket.on("joined", (data) => {
+  room = data.room;
+  users = data.users;
+  if(users.user1.username != username){
+    partner =users.user1.username;
+  }
+  else{
+    partner = users.user2.username;
+  }
+  document.querySelector(".nobody").innerHTML=`The User ${partner} joined chat`;
 });
 
 socket.on("new-message", (message) => {
+  if(!document.querySelector(".nobody").classList.contains("hidden"))
+  document.querySelector(".nobody").classList.add("hidden");
   receiveMessage(message);
 });
 
@@ -75,15 +88,18 @@ socket.on("signalingMessage", (data) => {
 // Chat Functions
 
 
+
 function attachMessage(message) {
   const userMessageContainer = document.createElement('div');
   userMessageContainer.classList.add('flex', 'my-2', 'justify-end');
 
   const userMessageDiv = document.createElement('div');
-  userMessageDiv.classList.add('bg-blue-500', 'text-white', 'p-3', 'rounded-lg', 'max-w-xs');
+  userMessageDiv.classList.add('bg-blue-500', 'text-white', 'p-3', 'rounded-lg', 'max-w-xs', 'shadow-md');
+
 
   const userMessageText = document.createElement('p');
   userMessageText.textContent = message;
+  userMessageText.classList.add("text-xl");
 
   userMessageDiv.appendChild(userMessageText);
 
@@ -99,11 +115,17 @@ function receiveMessage(message) {
   messageContainer.classList.add('flex', 'my-2', 'justify-start');
 
   const messageDiv = document.createElement('div');
-  messageDiv.classList.add('bg-gray-300', 'text-gray-800', 'p-3', 'rounded-lg', 'max-w-xs');
+  messageDiv.classList.add('bg-gray-300', 'text-gray-800', 'p-3', 'rounded-lg', 'max-w-xs', 'shadow-md');
+
+  const partnerNameText = document.createElement('p');
+  partnerNameText.textContent = partner+":";
+  partnerNameText.classList.add('text-sm', 'font-semibold', 'mb-1', 'text-left', 'text-gray-600');
 
   const messageText = document.createElement('p');
   messageText.textContent = message;
+  messageText.classList.add("text-xl");
 
+  messageDiv.appendChild(partnerNameText);
   messageDiv.appendChild(messageText);
 
   messageContainer.appendChild(messageDiv);
@@ -111,6 +133,7 @@ function receiveMessage(message) {
   document.getElementById('message-container').appendChild(messageContainer);
   document.querySelector("#message-container").scrollTop = document.querySelector("#message-container").scrollHeight;
 }
+
 
 
 // WebRTC Functions

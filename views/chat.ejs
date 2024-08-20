@@ -81,6 +81,7 @@
 
   <body class="flex flex-col h-dvh bg-gray-200">
     <%- include('partials/header') %>
+    
     <div class="fixed videoblock hidden z-[222] w-full h-screen">
       <div id="videos" class="relative w-full h-full">
         <!-- Remote video (Full screen) -->
@@ -127,7 +128,7 @@
       class="fixed hidden z-[222] w-full h-dvh bg-gray-900 bg-opacity-75 flex items-center justify-center"
     >
       <div class="bg-white p-8 rounded-md text-center">
-        <p class="mb-4">Incoming Call...</p>
+        <p class="mb-4">Incoming Call...From <%= name%></p>
         <button
           id="accept-call"
           class="bg-green-500 text-white py-2 px-4 rounded-md"
