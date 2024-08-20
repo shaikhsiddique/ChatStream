@@ -69,6 +69,7 @@ socket.on("new-message", (message) => {
 });
 
 socket.on("incomingCall", () => {
+  document.getElementById("caller-name").innerText = `Incoming Call...From ${partner}`;
   document.querySelector("#incoming-call").classList.remove("hidden");
 });
 
