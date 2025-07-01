@@ -30,9 +30,6 @@ Built with:
 | Socket.IO  | Real-time bi-directional communication |
 | WebRTC     | Peer-to-peer video communication |
 
-## 📸 Screenshot
-
-![ChatStream Screenshot](https://drive.google.com/uc?export=view&id=1lN6oiCSZfvycMf_z1VqOrmw0ruQ8VW4P)
 
 ## 🚀 Installation
 
