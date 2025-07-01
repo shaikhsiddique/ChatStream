@@ -37,10 +37,10 @@ Built with:
 git clone https://github.com/shaikhsiddique/ChatStream.git
 cd ChatStream
 npm install
-npm start
+node app.js
 ```
 
-Then open `http://localhost:3000` in your browser.
+Then open `http://localhost:4000` in your browser.
 
 ## 🙌 Author
 
